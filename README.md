@@ -1,26 +1,26 @@
-﻿# Generator Artykułów AI
+﻿# AI Article Generator
 
-Desktopowa aplikacja w Python + CustomTkinter do generowania artykułów z użyciem AI.
+A desktop application built with Python + CustomTkinter for generating articles using AI.
 
-## Funkcje
-- Generowanie propozycji tematów
-- Generowanie pełnego artykułu
-- Zapis artykułu do pliku Word (`.docx`)
-- Historia wygenerowanych artykułów (`historia.docx`)
+## Features
+- Generate topic proposals
+- Generate full articles
+- Save articles to Word files (`.docx`)
+- Browse article history (`historia.docx`)
 
-## Wymagania
+## Requirements
 - Python 3.12+
-- Zainstalowane zależności z projektu
+- Installed project dependencies
 
-## Konfiguracja
-1. Skopiuj `.env.example` do `.env` (jeśli jeszcze nie istnieje).
-2. Uzupełnij klucz API:
+## Configuration
+1. Copy `.env.example` to `.env` (if it does not exist yet).
+2. Add your API key:
 
 ```env
-GEMINI_API_KEY=twoj_klucz_api
+GEMINI_API_KEY=your_api_key
 ```
 
-## Uruchamianie
+## Run
 ```bash
 python main.py
 ```
@@ -30,4 +30,4 @@ python main.py
 python -m PyInstaller --noconfirm GeneratorArtykulow.spec
 ```
 
-Gotowy plik znajduje się w katalogu `dist/`.
+The generated executable is available in the `dist/` directory.
