@@ -4,7 +4,6 @@ import customtkinter as ctk
 from tkinter import filedialog, messagebox
 
 from ai_service import (
-    generate_article_text,
     generate_topic_proposals,
     stream_article_text,
 )
@@ -72,14 +71,6 @@ class App(ctk.CTk):
             font=ctk.CTkFont(size=14),
         )
         self.subtitle_label.grid(row=1, column=0, pady=(4, 0))
-
-        self.usage_status_label = ctk.CTkLabel(
-            self.header_frame,
-            textvariable=self.usage_status_text,
-            text_color="#7A7A7A",
-            font=ctk.CTkFont(size=13),
-        )
-        self.usage_status_label.grid(row=2, column=0, pady=(6, 0))
 
     def _build_tabs(self):
         self.tab_view = ctk.CTkTabview(
@@ -235,9 +226,6 @@ class App(ctk.CTk):
             font=ctk.CTkFont(size=15, weight="bold"),
         )
         self.generate_article_button.grid(row=0, column=0, sticky="ew")
-
-        if hasattr(self, "usage_status_label"):
-            self.usage_status_label.grid_forget()
 
         self.usage_status_label = ctk.CTkLabel(
             self.sidebar_frame,
@@ -456,15 +444,14 @@ class App(ctk.CTk):
             self.refresh_usage_label()
             return
 
-        register_ai_use()
-        self.refresh_usage_label()
-
         self.proposals_status_text.set("Generowanie propozycji...")
         self.set_action_buttons_enabled(False)
 
         def worker():
             try:
                 proposals = generate_topic_proposals(topic, content_type)
+                register_ai_use()
+                self.after(0, self.refresh_usage_label)
                 self.after(0, lambda: self.on_topics_success(proposals))
             except Exception as e:
                 error_text = str(e)
@@ -487,9 +474,6 @@ class App(ctk.CTk):
             self.refresh_usage_label()
             return
 
-        register_ai_use()
-        self.refresh_usage_label()
-
         self.article_textbox.delete("1.0", "end")
         self.article_status_text.set("Tworzenie artykułu...")
         self.set_action_buttons_enabled(False)
@@ -498,6 +482,8 @@ class App(ctk.CTk):
             try:
                 for chunk in stream_article_text(chosen, content_type):
                     self.after(0, lambda c=chunk: self.article_textbox.insert("end", c))
+                register_ai_use()
+                self.after(0, self.refresh_usage_label)
                 self.after(0, self.on_article_stream_done)
             except Exception as e:
                 error_text = str(e)

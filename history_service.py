@@ -1,6 +1,7 @@
 ﻿from __future__ import annotations
 
 import re
+from datetime import datetime
 from pathlib import Path
 
 from docx import Document
@@ -95,7 +96,6 @@ def save_article(topic: str, content_type: str, text: str) -> None:
         return
 
     entries = _parse_entries()
-    from datetime import datetime
 
     entries.append(
         {
